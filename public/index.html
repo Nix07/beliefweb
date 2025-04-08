@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Language Models use Lookbacks to Track Beliefs</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description"
+    content="Analyzing how language models represent and reason about characters' beliefs through lookback mechanisms." />
+  <meta property="og:title" content="Language Models use Lookbacks to Track Beliefs" />
+  <meta property="og:description"
+    content="Analyzing how language models represent and reason about characters' beliefs through lookback mechanisms." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Language Models use Lookbacks to Track Beliefs" />
+  <meta name="twitter:description"
+    content="Analyzing how language models represent and reason about characters' beliefs through lookback mechanisms." />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Math&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+
+  <style>
+    .relatedthumb {
+      float: left;
+      width: 200px;
+      margin: 3px 10px 7px 0;
+    }
+
+    .relatedblock {
+      clear: both;
+      display: inline-block;
+    }
+
+    .bold-sc {
+      font-variant: small-caps;
+      font-weight: bold;
+    }
+
+    .cite,
+    .citegroup {
+      margin-bottom: 8px;
+    }
+
+    :target {
+      background-color: yellow;
+    }
+
+    .figure-caption {
+      text-align: center;
+      font-style: italic;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .lookback-figure {
+      margin: 30px auto;
+      max-width: 800px;
+      text-align: center;
+    }
+  </style>
+
+</head>
+
+<body class="nd-docs">
+  <div class="nd-pageheader">
+    <div class="container">
+      <h1 class="lead">
+        Language Models use Lookbacks to Track Beliefs
+      </h1>
+      <address>
+        <nobr><a href="#" target="_blank">Nikhil Prakash</a><sup>1</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Natalie Shapira</a><sup>2</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Arnab Sen Sharma</a><sup>1</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Christoph Riedl</a><sup>1</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Yonatan Belinkov</a><sup>2</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Tamar Rott Shaham</a><sup>3</sup>,</nobr>
+        <nobr><a href="#" target="_blank">David Bau</a><sup>1</sup>,</nobr>
+        <nobr><a href="#" target="_blank">Atticus Geiger</a><sup>4</sup></nobr>
+        <br>
+        <nobr><sup>1</sup><a href="https://khoury.northeastern.edu/" target="_blank">Northeastern University</a>,</nobr>
+        <nobr><sup>2</sup><a href="https://cs.technion.ac.il/" target="_blank">Technion - IIT</a>,</nobr>
+        <nobr><sup>3</sup><a href="https://www.csail.mit.edu/" target="_blank">MIT CSAIL</a>,</nobr>
+        <nobr><sup>4</sup><a href="#" target="_blank">Pr(Ai)<sup>2</sup>R Group</a></nobr>
+
+      </address>
+    </div>
+  </div><!-- end nd-pageheader -->
+
+  <div class="container">
+    <div class="row justify-content-center text-center">
+
+      <p>
+        <a href="pdf/Language_Models_use_Lookbacks_to_Track_Beliefs.pdf" class="d-inline-block p-3 align-top"
+          target="_blank"><img height="100" width="78" src="images/paper-thumb.png"
+            style="border:1px solid; margin: 0 38px;" alt="ArXiv Preprint thumbnail" data-nothumb=""><br>Under
+          Review</a>
+      </p>
+
+      <div class="card" style="max-width: 1020px;">
+        <div class="card-block">
+          <h3>How Do Language Models Track Characters' Beliefs?</h3>
+          <p style="text-align: justify;">
+            The ability to infer mental states of others—known as Theory of Mind (ToM)—is an essential aspect of social
+            and collective intelligence. Consequently, numerous studies have explored this capability in contemporary
+            language models (LMs). However, there is no clear consensus on the extent of these capabilities, largely
+            because existing research relies primarily on behavioral testing. That is, it remains unclear whether LMs
+            are leveraging surface-level statistical patterns or have genuinely learned to represent and track mental
+            states. To address this, the present work investigates the belief-tracking mechanisms that may underlie the
+            early signs of ToM in LMs.
+          </p>
+          <p style="text-align: justify;">
+            Our investigation uncovered a consistent algorithmic pattern, which we refer to as the <b>Lookback Mechanism</b>. The language model (LM) first generates reference information—specifically, Ordering IDs (OIDs)—for each character–object–state triple. It then performs reasoning over this reference information using three distinct lookbacks. The first, the <b>Binding Lookback</b>, identifies the correct state OID. The second, the <b>Answer Lookback</b>, uses the OID obtained from the binding lookback to retrieve the corresponding answer state token value. Finally, when an explicit visibility condition between characters is present, the LM employs an additional lookback—called the <b>Visibility Lookback</b>—to integrate information about the observed character, thereby enhancing the observing character's awareness.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col">
+
+        <h2>CausalToM Dataset</h2>
+        <p>
+          Existing datasets for evaluating ToM capabilities of LMs are designed for behavioral testing and lack the
+          ability to construct counterfactual pairs needed for causal analysis. To address this, we constructed
+          <b>CausalToM</b>, a structured dataset of simple stories, where each story involves two characters, each
+          interacting with a distinct object causing the object to take a unique state. We analyze the LM's ability to
+          track characters' beliefs in two distinct settings:
+        </p>
+
+        <ol>
+          <li><b>No Visibility</b>: Both characters are unaware of each other's actions (left).</li>
+          <li><b>Explicit Visibility</b>: Explicit information about whether a character can/cannot observe the other's
+            actions is provided (right).</li>
+        </ol>
+
+        <div
+          style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 20px; width: 100%; margin-bottom: 10px;">
+          <figure style="margin: 0; flex: 1; min-width: 380px; max-width: 580px;">
+            <img src="images/paper/task1.png" style="width: 100%;">
+          </figure>
+          <figure style="margin: 0; flex: 1; min-width: 380px; max-width: 580px;">
+            <img src="images/paper/task2.png" style="width: 100%;">
+          </figure>
+        </div>
+
+        <p>In this work, we investigate the internal mechanisms that enable <b>Llama-3-70B-Instruct</b> to reason about
+          and answer questions concerning characters' beliefs about the state of each object.</p>
+
+        <h2>The Lookback Mechanism</h2>
+        <p>
+          Our investigations of belief tracking uncovered a recurring pattern of computation that we call
+          <i>lookback</i>. In a lookback mechanism, <i>source information</i> is copied via attention into an
+          <i>address</i> copy in the residual stream of a <i>recalled token</i> and a <i>pointer</i> copy in the
+          residual stream of a <i>lookback</i> token that occurs later in the text. The LM places the address alongside
+          a <i>payload</i> of the recalled token's residual stream that can be brought forward to the lookback token via
+          attention if necessary.
+        </p>
+
+        <figure class="center_image">
+          <center><img src="images/paper/lookback.png" style="width:100%; max-width:300px"></center>
+          <figcaption style="margin-top: 10px;">
+            <strong>Figure 1:</strong> The lookback mechanism is used to perform conditional reasoning. The source token
+            contains information that is copied into two instances via attention to create a pointer and an address.
+            Alongside the address in the residual stream is a payload information. If necessary, the model can retrieve
+            the payload by dereferencing the pointer. The solid lines are movement via residual connections or attention
+            heads, while the dotted line indicates the attention "looking back" from pointer to address.
+          </figcaption>
+        </figure>
+
+        <p>
+          We identified three key lookback mechanisms that collectively perform belief tracking:
+        </p>
+        <ol>
+          <li><strong>Binding Lookback:</strong> This lookback identifies the correct state token reference information,
+            i.e. their Ordering ID (OID).</li>
+          <li><strong>Answer Lookback:</strong> Uses the answer state OID from the binding lookback to retrieve the
+            answer state token value.</li>
+          <li><strong>Visibility Lookback:</strong> When an explicit visibility condition between characters is
+            mentioned, this lookback employs additional reference information, called the Visibility ID, to retrieve
+            information about the observed character, augmenting the observing character's awareness.</li>
+        </ol>
+
+        <h2>Belief Tracking with No Visibility Between Characters</h2>
+        <p>
+          When presented with belief tracking tasks where characters have no visibility of each other, the LM solves the
+          task using Ordering ID assignment, binding lookback, and answer lookback.
+        </p>
+
+        <div class="lookback-figure">
+          <img src="images/paper/causalmodel_novis.png" alt="Belief Tracking Diagram" style="max-width:100%">
+          <div class="figure-caption">
+            <strong>Figure 2:</strong> Belief Tracking with no visibility between characters. The LM assigns ordering
+            IDs (OIDs) to each character, object, and state that encode their order of appearance. (a) Binding lookback:
+            Address copies of character and object OIDs are placed alongside the state OID payload in the residual
+            stream of state tokens while pointer copies are moved to the final token residual stream. (b) Answer
+            lookback: An address copy of the state OID is alongside the state token payload in the residual stream of
+            state tokens while a pointer copy is moved to the final token residual stream via binding lookback.
+          </div>
+        </div>
+
+        <h3>Ordering ID Assignment</h3>
+        <p>
+          LM processes input tokens by assigning an Ordering ID (OID) to each crucial token, including character,
+          object, and state tokens. These OIDs, encoded in a low-rank subspace of the internal activation, <b>serve as a
+          reference that indicates whether an entity is the first or second of its type, regardless of its token value.</b>
+        </p>
+
+        <h3>Binding Lookback</h3>
+        <p>
+          The Binding lookback is the first operation applied to these OIDs. The character and object OIDs, serving as
+          the source information, are duplicated into two instances each. One copy, referred to as the address, is
+          placed in the residual stream of the state token (recalled token), alongside the state OID as the payload to
+          transfer. The other copy, known as the pointer, is moved in the residual stream of the final token (lookback
+          token). <b>These pointer and address copies are then used to form the QK-circuit at the lookback token, which
+          dereferences the state OID payload, transferring it from the state token to the final token</b>.
+        </p>
+
+        <h3>Answer Lookback</h3>
+        <p>
+          The LM answers the question using the Answer Lookback. The state OID of the correct answer serves as the
+          source information, which is copied into two instances. One instance, the address copy of the state OID, is in
+          the residual stream of the state token (the recalled token) with the state token itself as the payload. The
+          other instance, the pointer copy of the state OID, is transferred to the residual stream of the final token as
+          the binding lookback payload. <b>This pointer is then dereferenced, bringing the state token payload into the
+          residual stream of the final token</b>.
+        </p>
+
+        <h2>Impact of Visibility Conditions on Belief Tracking</h2>
+        <p>
+          When provided with additional information—that one of the characters (observing) can observe the actions of
+          others (observed), the LM employs another lookback mechanism, which we refer to as the Visibility Lookback, to
+          incorporate information about the observed character.
+        </p>
+
+        <div class="lookback-figure">
+          <img src="images/paper/causalmodel_vis.png" alt="Visibility Lookback Diagram" style="max-width:100%">
+          <div class="figure-caption">
+            <strong>Figure 3:</strong> Visibility Lookback - When one character (the observing character) can see
+            another (the observed character), the LM assigns a visibility ID to the visibility sentence. An address copy
+            of this visibility ID remains in the visibility sentence's residual stream. A pointer copy of the visibility
+            ID is transferred to the question's residual stream (lookback tokens). This mechanism allows the model to
+            incorporate the observed character's knowledge into the observing character's belief state.
+          </div>
+        </div>
+
+        <p>
+          As illustrated above, the LM first generates a Visibility ID at the residual stream of the
+          visibility sentence, serving as the source information. The address copy of the visibility ID remains in the
+          residual stream of the visibility sentence, while its pointer copy gets transferred to the residual streams of
+          the question tokens, which are the lookback tokens. Then <b>LM forms a QK-circuit at the lookback token and
+          dereferences the visibility ID pointer to bring forward the payload containing vital information about the observed character</b>.
+        </p>
+
+        <h2>Related Works</h2>
+        <p>
+          Our work builds upon insights from previous research that has investigated large language models from various
+          other perspectives:
+        </p>
+
+        <p class="citation">
+          <a href="https://finetuning.baulab.info/" target="_blank">
+            <img src="images/related_works/finetuning.png" alt="Finetuning (Prakash et. al 2024)">
+            Nikhil Prakash, Tamar Rott Shaham, Tal Haklay, Yonatan Belinkov, David Bau. Fine-Tuning Enhances Existing
+            Mechanisms: A Case Study on Entity Tracking. ICLR 2024.
+          </a>
+          <br>
+          <b>Notes:</b> Investigated how LLMs perform entity tracking task and found that they primarily use
+          position-based reference information to associate entities with their corresponding attributes. Additionally,
+          it also identified a submechanism similar to the Answer lookback, through the model deferences the reference
+          information to fetch correct attribute token value.
+        </p>
+
+        <p class="citation">
+          <a href="https://aclanthology.org/2024.emnlp-main.967/" target="_blank">
+            <img src="images/related_works/OID.png" alt="OID (Dai et. al 2024)">
+            Qin Dai, Benjamin Heinzerling, Kentaro Inui. Representational Analysis of Binding in Language Models. EMNLP
+            2024.
+          </a>
+          <br>
+          <b>Notes:</b>
+        </p>
+
+        <p class="citation">
+          <a href="https://proceedings.mlr.press/v236/geiger24a.html" target="_blank">
+            <img src="images/related_works/DAS.png" alt="DAS (Geiger et. al 2021)">
+            Atticus Geiger, Zhengxuan Wu, Christopher Potts, Thomas Icard, and Noah D. Goodman. Finding Alignments
+            Between Interpretable Causal Variables and Distributed Neural Representations.
+            Conference on Causal Learning and Reasoning (CLeaR 2024).
+          </a>
+          <br>
+          <b>Notes:</b> Proposed Distributed Alignment Search (DAS) method to find the alignment between high-level and
+          low-level causal models by learning an orthogonal matrix using gradient descent.
+        </p>
+
+        <p class="citation">
+          <a href="https://dcm.baulab.info/" target="_blank">
+            <img src="images/related_works/dcm.png" alt="DCM (Davies et. al 2021)">
+            Xander Davies, Max Nadeau, Nikhil Prakash, Tamar Rott Shaham, David Bau. Discovering Variable Binding
+            Circuitry with Desiderata.
+            Workshop on Challenges in Deployable Generative AI at International Conference on Machine Learning (ICML
+            2023).
+          </a>
+          <br>
+          <b>Notes:</b> Proposed Desiderata-based Component Masking (DCM) method to localize components responsible for
+          variable binding in Llama-13B.
+        </p>
+
+
+
+      </div>
+    </div><!--row -->
+  </div> <!-- container -->
+
+  <footer class="nd-pagefooter">
+    <div class="row">
+      <div class="col-6 col-md text-center">
+        <a href="https://baulab.info/">About the Bau Lab</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script>
+  $(document).on('click', '.clickselect', function (ev) {
+    var range = document.createRange();
+    range.selectNodeContents(this);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
+</script>
+
+</html>
