@@ -1,4 +1,4 @@
 # beliefweb
 
-Website for https://belief.baulab.info/
+Code for https://belief.baulab.info/
 
