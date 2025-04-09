@@ -110,7 +110,8 @@
         <div class="card-block">
           <h3>How Do Language Models Track Characters' Beliefs?</h3>
           <p style="text-align: justify;">
-            The ability to infer mental states of others—known as Theory of Mind (ToM)—is an essential aspect of social
+            The ability to infer mental states of others&mdash;known as Theory of Mind (ToM)&mdash;is an essential
+            aspect of social
             and collective intelligence. Consequently, numerous studies have explored this capability in contemporary
             language models (LMs). However, there is no clear consensus on the extent of these capabilities, largely
             because existing research relies primarily on behavioral testing. That is, it remains unclear whether LMs
@@ -119,7 +120,15 @@
             early signs of ToM in LMs.
           </p>
           <p style="text-align: justify;">
-            Our investigation uncovered a consistent algorithmic pattern, which we refer to as the <b>Lookback Mechanism</b>. The language model (LM) first generates reference information—specifically, Ordering IDs (OIDs)—for each character–object–state triple. It then performs reasoning over this reference information using three distinct lookbacks. The first, the <b>Binding Lookback</b>, identifies the correct state OID. The second, the <b>Answer Lookback</b>, uses the OID obtained from the binding lookback to retrieve the corresponding answer state token value. Finally, when an explicit visibility condition between characters is present, the LM employs an additional lookback—called the <b>Visibility Lookback</b>—to integrate information about the observed character, thereby enhancing the observing character's awareness.
+            Our investigation uncovered a consistent algorithmic pattern, which we refer to as the <b>Lookback
+              Mechanism</b>. The language model (LM) first generates reference information&mdash;specifically, Ordering
+            IDs (OIDs)&mdash;for each character–object–state triple. It then performs reasoning over this reference
+            information using three distinct lookbacks. The first, the <b>Binding Lookback</b>, identifies the correct
+            state OID. The second, the <b>Answer Lookback</b>, uses the OID obtained from the binding lookback to
+            retrieve the corresponding answer state token value. Finally, when an explicit visibility condition between
+            characters is present, the LM employs an additional lookback&mdash;called the <b>Visibility
+              Lookback</b>&mdash;to integrate information about the observed character, thereby enhancing the observing
+            character's awareness.
           </p>
         </div>
       </div>
@@ -213,7 +222,8 @@
         <p>
           LM processes input tokens by assigning an Ordering ID (OID) to each crucial token, including character,
           object, and state tokens. These OIDs, encoded in a low-rank subspace of the internal activation, <b>serve as a
-          reference that indicates whether an entity is the first or second of its type, regardless of its token value.</b>
+            reference that indicates whether an entity is the first or second of its type, regardless of its token
+            value.</b>
         </p>
 
         <h3>Binding Lookback</h3>
@@ -223,7 +233,7 @@
           placed in the residual stream of the state token (recalled token), alongside the state OID as the payload to
           transfer. The other copy, known as the pointer, is moved in the residual stream of the final token (lookback
           token). <b>These pointer and address copies are then used to form the QK-circuit at the lookback token, which
-          dereferences the state OID payload, transferring it from the state token to the final token</b>.
+            dereferences the state OID payload, transferring it from the state token to the final token</b>.
         </p>
 
         <h3>Answer Lookback</h3>
@@ -233,12 +243,13 @@
           the residual stream of the state token (the recalled token) with the state token itself as the payload. The
           other instance, the pointer copy of the state OID, is transferred to the residual stream of the final token as
           the binding lookback payload. <b>This pointer is then dereferenced, bringing the state token payload into the
-          residual stream of the final token</b>.
+            residual stream of the final token</b>.
         </p>
 
         <h2>Impact of Visibility Conditions on Belief Tracking</h2>
         <p>
-          When provided with additional information—that one of the characters (observing) can observe the actions of
+          When provided with additional information&mdash;that one of the characters (observing) can observe the actions
+          of
           others (observed), the LM employs another lookback mechanism, which we refer to as the Visibility Lookback, to
           incorporate information about the observed character.
         </p>
@@ -259,7 +270,8 @@
           visibility sentence, serving as the source information. The address copy of the visibility ID remains in the
           residual stream of the visibility sentence, while its pointer copy gets transferred to the residual streams of
           the question tokens, which are the lookback tokens. Then <b>LM forms a QK-circuit at the lookback token and
-          dereferences the visibility ID pointer to bring forward the payload containing vital information about the observed character</b>.
+            dereferences the visibility ID pointer to bring forward the payload containing vital information about the
+            observed character</b>.
         </p>
 
         <h2>Related Works</h2>
