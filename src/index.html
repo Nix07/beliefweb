@@ -311,9 +311,9 @@
             2024.
           </a>
           <br>
-          <b>Notes:</b> Identified a low-rank subspace in LMs' hidden states that encodes "Binding IDs" - the mechanism
-          by which models bind entities to their attributes for tracking (like remembering "Box Z contains coffee"). The
-          authors use principal component analysis to locate this subspace and demonstrate that editing representations
+          <b>Notes:</b> Identified a low-rank subspace in LMs' hidden states that encodes Ordering IDs (OIDs), which are
+          used to bind entities to their attributes for tracking (like remembering "Box Z contains coffee"). It used
+          principal component analysis to locate this subspace and demonstrate that editing representations
           along these directions can manipulate which attributes a model associates with specific entities, essentially
           allowing them to redirect the model's entity-attribute bindings.
         </p>
