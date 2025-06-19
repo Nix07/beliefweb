@@ -100,22 +100,21 @@
     <div class="row justify-content-center text-center">
 
       <p>
-        <a href="https://arxiv.org/abs/2505.14685" class="d-inline-block p-3 align-top"
-          target="_blank"><img height="100" width="78" src="images/paper-thumb.png"
-            style="border:1px solid; margin: 0 38px;" alt="ArXiv Preprint thumbnail" data-nothumb=""><br>ArXiv<br>
+        <a href="https://arxiv.org/abs/2505.14685" class="d-inline-block p-3 align-top" target="_blank"><img
+            height="100" width="78" src="images/paper-thumb.png" style="border:1px solid; margin: 0 38px;"
+            alt="ArXiv Preprint thumbnail" data-nothumb=""><br>ArXiv<br>
           Preprint
         </a>
 
-        <a href="https://github.com/Nix07/mind" class="d-inline-block p-3 align-top" target="_blank"><img
-          height="100" width="78" src="images/code-thumb.png" style="border:1px solid; margin: 0 38px;"
-            alt="Github code thumbnail" data-nothumb=""><br>Source
+        <a href="https://github.com/Nix07/mind" class="d-inline-block p-3 align-top" target="_blank"><img height="100"
+            width="78" src="images/code-thumb.png" style="border:1px solid; margin: 0 38px;" alt="Github code thumbnail"
+            data-nothumb=""><br>Source
           Code<br>Github
         </a>
 
         <a href="https://notebooklm.google.com/notebook/cb9f795a-c73b-4e91-b4e8-7f318065979b/audio"
-          class="d-inline-block p-3 align-top" target="_blank"><img height="78" width="104"
-            src="images/NotebookLM.png" style="border:1px solid" alt="Huggingface demo thumbnail"
-            data-nothumb=""><br>Podcast<br>(NotebookLM)</a>
+          class="d-inline-block p-3 align-top" target="_blank"><img height="78" width="104" src="images/NotebookLM.png"
+            style="border:1px solid" alt="Huggingface demo thumbnail" data-nothumb=""><br>Podcast<br>(NotebookLM)</a>
       </p>
 
       <div class="card" style="max-width: 1020px;">
@@ -312,7 +311,11 @@
             2024.
           </a>
           <br>
-          <b>Notes:</b>
+          <b>Notes:</b> Identified a low-rank subspace in LMs' hidden states that encodes "Binding IDs" - the mechanism
+          by which models bind entities to their attributes for tracking (like remembering "Box Z contains coffee"). The
+          authors use principal component analysis to locate this subspace and demonstrate that editing representations
+          along these directions can manipulate which attributes a model associates with specific entities, essentially
+          allowing them to redirect the model's entity-attribute bindings.
         </p>
 
         <p class="citation">
